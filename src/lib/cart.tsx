@@ -3,7 +3,7 @@
 import {createContext, useCallback, useContext, useMemo, useState} from 'react';
 import type {Product} from '@/data/products';
 
-type CartLine = {product: Product; qty: number};
+export type CartLine = {product: Product; qty: number};
 
 type CartContextValue = {
   lines: CartLine[];
@@ -15,14 +15,25 @@ type CartContextValue = {
   decrement: (id: string) => void;
   remove: (id: string) => void;
   clear: () => void;
+  /** Put removed lines back (undo for remove and clear). */
+  restore: (lines: CartLine[]) => void;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
 
 /** Client-side cart state. Swap for a server cart / API later. */
-export function CartProvider({children}: {children: React.ReactNode}) {
-  const [lines, setLines] = useState<CartLine[]>([]);
-  const [isOpen, setOpen] = useState(false);
+export function CartProvider({
+  children,
+  initialLines = [],
+  initialOpen = false,
+}: {
+  children: React.ReactNode;
+  /** Seed lines, for previews and tests. Production starts empty. */
+  initialLines?: CartLine[];
+  initialOpen?: boolean;
+}) {
+  const [lines, setLines] = useState<CartLine[]>(initialLines);
+  const [isOpen, setOpen] = useState(initialOpen);
 
   const add = useCallback((product: Product) => {
     setLines(prev => {
@@ -48,11 +59,23 @@ export function CartProvider({children}: {children: React.ReactNode}) {
 
   const clear = useCallback(() => setLines([]), []);
 
+  // Undo: put back any snapshot line that is missing now, at its old position,
+  // without dropping lines added since.
+  const restore = useCallback((snapshot: CartLine[]) => {
+    setLines(cur => {
+      const next = [...cur];
+      snapshot.forEach((line, i) => {
+        if (!next.some(l => l.product.id === line.product.id)) next.splice(Math.min(i, next.length), 0, line);
+      });
+      return next;
+    });
+  }, []);
+
   const value = useMemo<CartContextValue>(() => {
     const count = lines.reduce((n, l) => n + l.qty, 0);
     const subtotal = lines.reduce((n, l) => n + l.qty * l.product.price, 0);
-    return {lines, count, subtotal, isOpen, setOpen, add, decrement, remove, clear};
-  }, [lines, isOpen, add, decrement, remove, clear]);
+    return {lines, count, subtotal, isOpen, setOpen, add, decrement, remove, clear, restore};
+  }, [lines, isOpen, add, decrement, remove, clear, restore]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }

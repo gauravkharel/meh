@@ -1,5 +1,6 @@
 'use client';
 
+import {useState} from 'react';
 import {Drawer, DrawerHeader} from '@astryxdesign/core/Drawer';
 import {VStack, HStack} from '@astryxdesign/core/Layout';
 import {List, ListItem} from '@astryxdesign/core/List';
@@ -7,59 +8,140 @@ import {Text} from '@astryxdesign/core/Text';
 import {Button} from '@astryxdesign/core/Button';
 import {IconButton} from '@astryxdesign/core/IconButton';
 import {Icon} from '@astryxdesign/core/Icon';
-import {Divider} from '@astryxdesign/core/Divider';
 import {EmptyState} from '@astryxdesign/core/EmptyState';
-import {MinusIcon, PlusIcon, TrashIcon, ShoppingBagIcon} from '@heroicons/react/20/solid';
+import {useToast} from '@astryxdesign/core/Toast';
+import {MinusIcon, PlusIcon, TrashIcon, ShoppingBagIcon} from '@heroicons/react/24/outline';
 import {formatPrice} from '@/data/products';
-import {useCart} from '@/lib/cart';
+import {useCart, type CartLine} from '@/lib/cart';
+import {formatItems} from '@/lib/plural';
+import {GarmentGlyph} from './GarmentGlyph';
+import {TILE, isDarkTone} from './tiles';
 
+/**
+ * Cart drawer. Removing a line or clearing the cart happens at once and offers
+ * Undo in a toast, instead of asking for confirmation first.
+ */
 export function CartDrawer() {
-  const {lines, count, subtotal, isOpen, setOpen, add, decrement, remove, clear} = useCart();
+  const {lines, count, subtotal, isOpen, setOpen, add, decrement, remove, clear, restore} = useCart();
+  const toast = useToast();
+  const [isCheckoutNoteShown, setCheckoutNoteShown] = useState(false);
+
+  const offerUndo = (body: string, snapshot: CartLine[]) => {
+    toast({
+      body,
+      uniqueID: 'cart-undo',
+      autoHideDuration: 10000,
+      endContent: (
+        <Button
+          label="Undo"
+          size="sm"
+          variant="secondary"
+          onClick={() => {
+            restore(snapshot);
+            // Same uniqueID: replaces the Undo toast with a confirmation.
+            toast({body: 'Put back in your cart', uniqueID: 'cart-undo'});
+          }}
+        />
+      ),
+    });
+  };
+
+  const removeLine = (line: CartLine) => {
+    const snapshot = lines;
+    remove(line.product.id);
+    offerUndo(`Removed ${line.product.name}`, snapshot);
+  };
 
   return (
     <Drawer isOpen={isOpen} onOpenChange={setOpen} label="Shopping cart" width={420}>
-      <VStack gap={4}>
-        <DrawerHeader
-          title="Your cart"
-          subtitle={`${count} ${count === 1 ? 'item' : 'items'}`}
-          onOpenChange={setOpen}
-        />
+      <VStack gap={4} className="min-h-full">
+        <DrawerHeader title="Your cart" subtitle={formatItems(count)} onOpenChange={setOpen} />
         {lines.length === 0 ? (
           <EmptyState
             icon={<Icon icon={ShoppingBagIcon} />}
             title="Your cart is empty"
-            description="Add something from New in."
+            description="New pieces drop every season. Start with what just landed."
+            actions={<Button label="Shop new in" variant="primary" href="#new-in" onClick={() => setOpen(false)} />}
           />
         ) : (
           <>
             <List hasDividers>
-              {lines.map(({product, qty}) => (
-                <ListItem
-                  key={product.id}
-                  label={product.name}
-                  description={`${formatPrice(product.price)} × ${qty}`}
-                  endContent={
-                    <HStack gap={1} vAlign="center">
-                      <IconButton label={`Remove one ${product.name}`} size="sm" variant="ghost" icon={<Icon icon={MinusIcon} />} onClick={() => decrement(product.id)} />
-                      <Text type="label">{qty}</Text>
-                      <IconButton label={`Add one ${product.name}`} size="sm" variant="ghost" icon={<Icon icon={PlusIcon} />} onClick={() => add(product)} />
-                      <IconButton label={`Remove ${product.name} from cart`} size="sm" variant="ghost" icon={<Icon icon={TrashIcon} />} onClick={() => remove(product.id)} />
-                    </HStack>
-                  }
-                />
-              ))}
+              {lines.map(line => {
+                const {product, qty} = line;
+                return (
+                  <ListItem
+                    key={product.id}
+                    align="start"
+                    startContent={
+                      <span
+                        aria-hidden
+                        className={`relative block h-14 w-11 shrink-0 overflow-hidden rounded-[var(--radius-inner)] outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10 ${TILE[product.tone]}`}>
+                        <GarmentGlyph category={product.category} isDark={isDarkTone(product.tone)} />
+                      </span>
+                    }
+                    label={
+                      <Text type="body" weight="medium" className="break-words [overflow-wrap:anywhere]">
+                        {product.name}
+                      </Text>
+                    }
+                    description={
+                      <Text type="supporting" className="tabular-nums">
+                        {formatPrice(product.price)} × {qty}
+                      </Text>
+                    }
+                    endContent={
+                      <HStack gap={0.5} vAlign="center">
+                        <IconButton
+                          label={qty === 1 ? `Remove ${product.name}` : `Remove one ${product.name}`}
+                          size="sm"
+                          variant="ghost"
+                          icon={<Icon icon={MinusIcon} />}
+                          onClick={() => (qty === 1 ? removeLine(line) : decrement(product.id))}
+                        />
+                        <Text type="label" className="min-w-[2ch] text-center tabular-nums">
+                          {qty}
+                        </Text>
+                        <IconButton label={`Add one ${product.name}`} size="sm" variant="ghost" icon={<Icon icon={PlusIcon} />} onClick={() => add(product)} />
+                        <IconButton
+                          label={`Remove ${product.name} from cart`}
+                          size="sm"
+                          variant="ghost"
+                          icon={<Icon icon={TrashIcon} />}
+                          onClick={() => removeLine(line)}
+                        />
+                      </HStack>
+                    }
+                  />
+                );
+              })}
             </List>
-            <Divider />
-            <HStack hAlign="between" vAlign="center">
-              <Text type="large">Subtotal</Text>
-              <Text type="large" weight="bold">
-                {formatPrice(subtotal)}
-              </Text>
-            </HStack>
-            <VStack gap={2}>
-              <Button label="Checkout (demo)" variant="primary" width="100%" isDisabled tooltip="Checkout is not wired up yet" />
-              <Button label="Clear cart" variant="ghost" width="100%" onClick={clear} />
-            </VStack>
+            {/* Summary stays in view while a long cart scrolls. */}
+            <div className="sticky -bottom-4 mt-auto -mx-4 -mb-4 border-t border-[var(--color-border)] bg-surface px-4 pt-4 pb-4">
+              <VStack gap={3}>
+                <HStack hAlign="between" vAlign="center">
+                  <Text type="large">Subtotal</Text>
+                  <Text type="large" weight="bold" className="tabular-nums">
+                    {formatPrice(subtotal)}
+                  </Text>
+                </HStack>
+                <VStack gap={2}>
+                  <Button label="Check out" variant="primary" width="100%" onClick={() => setCheckoutNoteShown(true)} />
+                  <p role="status" className="min-h-5 text-center text-[13px] text-secondary">
+                    {isCheckoutNoteShown ? 'Checkout isn’t connected in this demo. Your cart stays here.' : ''}
+                  </p>
+                  <Button
+                    label="Clear cart"
+                    variant="ghost"
+                    width="100%"
+                    onClick={() => {
+                      const snapshot = lines;
+                      clear();
+                      offerUndo('Cart cleared', snapshot);
+                    }}
+                  />
+                </VStack>
+              </VStack>
+            </div>
           </>
         )}
       </VStack>

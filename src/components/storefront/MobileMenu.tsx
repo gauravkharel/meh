@@ -7,12 +7,21 @@ import {VStack} from '@astryxdesign/core/Layout';
 import {Divider} from '@astryxdesign/core/Divider';
 import {Text} from '@astryxdesign/core/Text';
 import {TextInput} from '@astryxdesign/core/TextInput';
-import {COLLECTIONS, NAV_LINKS} from '@/data/products';
+import {Button} from '@astryxdesign/core/Button';
+import {COLLECTIONS, NAV_LINKS, PRODUCTS, RAIL_ITEMS, formatPrice} from '@/data/products';
+import {formatItems} from '@/lib/plural';
 
-/** Start-side Astryx Drawer: search field, big nav links, collection list. */
+const CATALOG = [
+  ...PRODUCTS.map(p => ({...p, href: '#new-in'})),
+  ...RAIL_ITEMS.map(p => ({...p, href: '#bags'})),
+];
+
+/** Start-side Astryx Drawer: product search, big nav links, collection list. */
 export function MobileMenu({isOpen, onOpenChange}: {isOpen: boolean; onOpenChange: (o: boolean) => void}) {
   const [query, setQuery] = useState('');
   const close = () => onOpenChange(false);
+  const q = query.trim().toLowerCase();
+  const results = q ? CATALOG.filter(p => `${p.name} ${p.category}`.toLowerCase().includes(q)) : [];
   return (
     <Drawer isOpen={isOpen} onOpenChange={onOpenChange} label="Menu" side="start" width={380}>
       <VStack gap={5}>
@@ -20,12 +29,40 @@ export function MobileMenu({isOpen, onOpenChange}: {isOpen: boolean; onOpenChang
         <TextInput
           label="Search the store"
           isLabelHidden
-          placeholder="Search tees, hoodies, bags…"
+          placeholder="Try “hoodie” or “bag”"
           value={query}
           onChange={setQuery}
           width="100%"
           data-autofocus
         />
+        {q ? (
+          <VStack gap={2}>
+            <p role="status" className="text-[13px] text-secondary">
+              {results.length ? `${formatItems(results.length)} for “${query.trim()}”` : `No results for “${query.trim()}”`}
+            </p>
+            {results.length ? (
+              <ul className="flex flex-col">
+                {results.slice(0, 6).map(p => (
+                  <li key={p.id}>
+                    <NextLink
+                      href={p.href}
+                      onClick={close}
+                      className="flex min-h-10 items-center justify-between gap-3 rounded-[var(--radius-element)] px-1 text-[15px] text-primary hover:bg-[var(--color-background-muted)]">
+                      <span className="min-w-0 break-words">{p.name}</span>
+                      <span className="shrink-0 text-[13px] text-secondary tabular-nums">
+                        {p.isSoldOut ? 'Sold out' : formatPrice(p.price)}
+                      </span>
+                    </NextLink>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div>
+                <Button label="Clear search" variant="secondary" size="sm" onClick={() => setQuery('')} />
+              </div>
+            )}
+          </VStack>
+        ) : null}
         <nav aria-label="Menu">
           <VStack gap={1}>
             {NAV_LINKS.map(l => (
@@ -43,7 +80,7 @@ export function MobileMenu({isOpen, onOpenChange}: {isOpen: boolean; onOpenChang
         <VStack gap={2}>
           <Text type="label">Collections</Text>
           {COLLECTIONS.map(c => (
-            <NextLink key={c.id} href="#collections" onClick={close} className="px-1 text-[14px] text-secondary hover:text-primary">
+            <NextLink key={c.id} href="#collections" onClick={close} className="flex min-h-8 items-center px-1 text-[15px] text-secondary hover:text-primary">
               {c.name}
             </NextLink>
           ))}
