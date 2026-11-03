@@ -1,23 +1,53 @@
 /*
  * Project-level design tokens for "meh".
  *
- * Astryx already supplies the core semantic tokens (color, type, spacing,
- * radius, shadow) through its theme (currently `theme-neutral`). This file is
- * the place for e-commerce specific tokens layered on top, exposed to Tailwind
- * through `@theme inline` so they become utilities (e.g. `bg-product-1`).
- *
- * When the real design arrives, prefer customising the Astryx theme
- * (`defineTheme({extends: neutralTheme, ...})`, see README) and keep this
- * file for anything Astryx doesn't model.
+ * Core semantic tokens (colour, type, radius, spacing) come from the Astryx
+ * theme in src/themes/meh.theme.ts (built to meh.css). This file only holds
+ * storefront-specific art direction that Astryx doesn't model:
+ *   - `tile-1` … `tile-8`: monochrome placeholder "photography" tiles
+ *   - `tile-hero`, `tile-campaign`, `tile-spaces`: editorial banner art
+ *   - the marquee keyframes
+ * Swap the tiles for real <Image> photography when it exists.
  */
 @theme inline {
-  /* Product placeholder swatches, mapped onto Astryx hue tokens */
-  --color-product-1: var(--color-background-blue);
-  --color-product-2: var(--color-background-orange);
-  --color-product-3: var(--color-background-green);
-  --color-product-4: var(--color-background-purple);
-  --color-product-5: var(--color-background-teal);
-  --color-product-6: var(--color-background-pink);
-  --color-product-7: var(--color-background-yellow);
-  --color-product-8: var(--color-background-cyan);
+  --color-ink: #0a0a0a;
+  --color-paper: #ffffff;
+  --animate-marquee: meh-marquee 40s linear infinite;
 }
+
+@keyframes meh-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee { animation: none; }
+}
+
+/* Soft studio-light gradients: a lit subject on a neutral sweep. */
+@utility tile-1 { background: radial-gradient(60% 50% at 50% 42%, #f4f4f4 0%, #d9d9d9 55%, #c4c4c4 100%); }
+@utility tile-2 { background: radial-gradient(55% 45% at 50% 40%, #4a4a4a 0%, #262626 60%, #141414 100%); }
+@utility tile-3 { background: radial-gradient(60% 50% at 45% 45%, #e7e3dc 0%, #c9c3b9 60%, #aea798 100%); }
+@utility tile-4 { background: radial-gradient(60% 50% at 55% 40%, #f7f5f0 0%, #e4e0d6 60%, #cfc9bc 100%); }
+@utility tile-5 { background: radial-gradient(60% 55% at 50% 35%, #bdbdbd 0%, #8f8f8f 60%, #6e6e6e 100%); }
+@utility tile-6 { background: radial-gradient(55% 45% at 50% 50%, #5c5c5c 0%, #3a3a3a 55%, #202020 100%); }
+@utility tile-7 { background: radial-gradient(60% 50% at 50% 45%, #e9ecee 0%, #cdd2d6 60%, #b4bbc0 100%); }
+@utility tile-8 { background: radial-gradient(55% 45% at 50% 40%, #2e2e2e 0%, #161616 60%, #050505 100%); }
+
+/* Editorial art: smoky, high-contrast, like a night campaign shoot. */
+@utility tile-hero {
+  background:
+    radial-gradient(40% 35% at 30% 60%, rgb(255 255 255 / 0.16) 0%, transparent 70%),
+    radial-gradient(35% 30% at 72% 38%, rgb(255 255 255 / 0.12) 0%, transparent 70%),
+    radial-gradient(80% 60% at 50% 110%, #3a3a3a 0%, transparent 60%),
+    linear-gradient(180deg, #1a1a1a 0%, #0b0b0b 60%, #000 100%);
+}
+@utility tile-campaign {
+  background:
+    radial-gradient(45% 60% at 20% 50%, rgb(255 255 255 / 0.55) 0%, transparent 70%),
+    linear-gradient(110deg, #d4d4d4 0%, #9a9a9a 55%, #5a5a5a 100%);
+}
+@utility tile-spaces {
+  background: linear-gradient(180deg, #dfe6ec 0%, #c9d3dc 100%);
+}
+

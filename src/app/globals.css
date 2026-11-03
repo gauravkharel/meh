@@ -10,14 +10,19 @@
  */
 @layer reset, theme, base, astryx-base, astryx-theme, components, utilities;
 
+/* Font named by the meh theme. */
+@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&display=swap");
+
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/preflight.css" layer(base);
 @import "@astryxdesign/core/reset.css";
 @import "@astryxdesign/core/astryx.css";
-@import "@astryxdesign/theme-neutral/theme.css";
-@import "@astryxdesign/theme-neutral/fonts.css";
+/* meh theme: Astryx Neutral extended for a monochrome streetwear mood (src/themes/meh.theme.ts) */
+@import "../themes/meh.css";
 @import "@astryxdesign/core/tailwind-theme.css";
 @import "tailwindcss/utilities.css" layer(utilities);
 
 /* Brand tokens (project-level). Swap these when the real design lands. */
 @import "../styles/tokens.css";
+
+html { scroll-behavior: smooth; scroll-padding-top: 96px; }

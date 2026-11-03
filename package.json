@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "theme:build": "astryx theme build src/themes/meh.theme.ts --out src/themes/meh.css"
   },
   "dependencies": {
     "@astryxdesign/core": "^0.7.6",

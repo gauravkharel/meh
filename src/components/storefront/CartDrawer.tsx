@@ -28,7 +28,7 @@ export function CartDrawer() {
           <EmptyState
             icon={<Icon icon={ShoppingBagIcon} />}
             title="Your cart is empty"
-            description="Add something from the featured products."
+            description="Add something from New in."
           />
         ) : (
           <>
