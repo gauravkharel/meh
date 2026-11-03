@@ -8,7 +8,7 @@ import {SpacesPanel} from '@/components/storefront/SpacesPanel';
 import {SearchStrip} from '@/components/storefront/SearchStrip';
 import {SiteFooter} from '@/components/storefront/SiteFooter';
 import {CartDrawer} from '@/components/storefront/CartDrawer';
-import {PRODUCTS, RAIL_ITEMS} from '@/data/products';
+import {FULL_DROP, NEW_IN} from '@/data/products';
 
 /**
  * meh v3 home page. Layout rhythm inspired by editorial streetwear stores
@@ -26,10 +26,9 @@ export default function Home() {
       <SiteHeader />
       <main id="main" tabIndex={-1} className="flex flex-col gap-section px-2 pt-2 pb-section outline-none">
         <EditorialHero />
-        <ProductGrid id="new-in" title="New in" products={PRODUCTS} />
-        <CollectionRail id="bags" title="Bags & carry" items={RAIL_ITEMS} />
+        <ProductGrid id="new-in" title="New in" products={NEW_IN} action={{label: 'Shop the full drop', href: '#drop'}} />
+        <CollectionRail id="drop" title="The full drop" items={FULL_DROP} />
         <CampaignBanner />
-        <ProductGrid id="essentials" title="Essentials" products={[...PRODUCTS].reverse()} action={{label: 'Shop bags', href: '#bags'}} />
         <CollectionsGrid />
         <SpacesPanel />
         <SearchStrip />

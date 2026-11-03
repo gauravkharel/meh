@@ -8,13 +8,10 @@ import {Divider} from '@astryxdesign/core/Divider';
 import {Text} from '@astryxdesign/core/Text';
 import {TextInput} from '@astryxdesign/core/TextInput';
 import {Button} from '@astryxdesign/core/Button';
-import {COLLECTIONS, NAV_LINKS, PRODUCTS, RAIL_ITEMS, formatPrice} from '@/data/products';
+import {COLLECTIONS, NAV_LINKS, PRODUCTS, NEW_IN, formatPrice} from '@/data/products';
 import {formatItems} from '@/lib/plural';
 
-const CATALOG = [
-  ...PRODUCTS.map(p => ({...p, href: '#new-in'})),
-  ...RAIL_ITEMS.map(p => ({...p, href: '#bags'})),
-];
+const CATALOG = PRODUCTS.map(p => ({...p, href: NEW_IN.includes(p) ? '#new-in' : '#drop'}));
 
 /** Start-side Astryx Drawer: product search, big nav links, collection list. */
 export function MobileMenu({isOpen, onOpenChange}: {isOpen: boolean; onOpenChange: (o: boolean) => void}) {
@@ -29,7 +26,7 @@ export function MobileMenu({isOpen, onOpenChange}: {isOpen: boolean; onOpenChang
         <TextInput
           label="Search the store"
           isLabelHidden
-          placeholder="Try “hoodie” or “bag”"
+          placeholder="Try “tee” or “leather”"
           value={query}
           onChange={setQuery}
           width="100%"

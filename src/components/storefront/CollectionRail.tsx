@@ -7,7 +7,7 @@ import {Panel} from './Panel';
 import {ProductTile} from './ProductTile';
 import {SectionHeader} from './SectionHeader';
 
-/** Rounded white panel holding a horizontal product carousel (Astryx Carousel). */
+/** Rounded white panel holding a horizontal product carousel (Astryx Carousel). Cards are fixed width, so image `sizes` are exact. */
 export function CollectionRail({id, title, items}: {id: string; title: string; items: Product[]}) {
   return (
     <Panel id={id} label={title} padding={3}>

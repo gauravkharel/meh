@@ -6,8 +6,8 @@ import { Button } from "@astryxdesign/core/Button";
 const SLIDES = [
   {
     id: "b1",
-    eyebrow: "Headwear",
-    title: "Caps, washed twice",
+    eyebrow: "Leather",
+    title: "Jackets that age well",
     tile: "tile-campaign",
     dark: false,
   },
@@ -20,8 +20,8 @@ const SLIDES = [
   },
   {
     id: "b3",
-    eyebrow: "Carry",
-    title: "Bags that go everywhere",
+    eyebrow: "Tees",
+    title: "Heavy cotton, cut boxy",
     tile: "tile-spaces",
     dark: false,
   },

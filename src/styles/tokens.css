@@ -4,10 +4,9 @@
  * Core semantic tokens (colour, type, radius, spacing) come from the Astryx
  * theme in src/themes/meh.theme.ts (built to meh.css). This file only holds
  * storefront-specific art direction that Astryx doesn't model:
- *   - `tile-1` … `tile-8`: monochrome placeholder "photography" tiles
  *   - `tile-hero`, `tile-campaign`, `tile-spaces`: editorial banner art
  *   - the marquee keyframes (opt-in via motion-safe:, pausable)
- * Swap the tiles for real <Image> photography when it exists.
+ * Product and campaign photos live in src/assets/images (next/image).
  */
 /* Section rhythm: the gap between home page sections (hero, grids, panels,
    footer). One knob: tune --meh-section-gap. Built on the Astryx spacing
@@ -32,16 +31,6 @@
 
 /* Components opt in with `motion-safe:animate-marquee`, so reduced motion
    never starts it. Announcements also carry a visible pause control. */
-
-/* Soft studio-light gradients: a lit subject on a neutral sweep. */
-@utility tile-1 { background: radial-gradient(60% 50% at 50% 42%, #f4f4f4 0%, #d9d9d9 55%, #c4c4c4 100%); }
-@utility tile-2 { background: radial-gradient(55% 45% at 50% 40%, #4a4a4a 0%, #262626 60%, #141414 100%); }
-@utility tile-3 { background: radial-gradient(60% 50% at 45% 45%, #e7e3dc 0%, #c9c3b9 60%, #aea798 100%); }
-@utility tile-4 { background: radial-gradient(60% 50% at 55% 40%, #f7f5f0 0%, #e4e0d6 60%, #cfc9bc 100%); }
-@utility tile-5 { background: radial-gradient(60% 55% at 50% 35%, #bdbdbd 0%, #8f8f8f 60%, #6e6e6e 100%); }
-@utility tile-6 { background: radial-gradient(55% 45% at 50% 50%, #5c5c5c 0%, #3a3a3a 55%, #202020 100%); }
-@utility tile-7 { background: radial-gradient(60% 50% at 50% 45%, #e9ecee 0%, #cdd2d6 60%, #b4bbc0 100%); }
-@utility tile-8 { background: radial-gradient(55% 45% at 50% 40%, #2e2e2e 0%, #161616 60%, #050505 100%); }
 
 /* Editorial art: smoky, high-contrast, like a night campaign shoot. */
 @utility tile-hero {

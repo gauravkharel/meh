@@ -1,12 +1,27 @@
+import type {StaticImageData} from 'next/image';
+import fieldBomber from '@/assets/images/products/field-bomber-olive.webp';
+import leatherJacket from '@/assets/images/products/leather-jacket-black.webp';
+import motoJacket from '@/assets/images/products/moto-jacket-burgundy.webp';
+import wideTrouser from '@/assets/images/products/belted-wide-trouser-taupe.webp';
+import heavyTee from '@/assets/images/products/heavy-tee-mustard.webp';
+import oversizedTee from '@/assets/images/products/oversized-tee-forest.webp';
+import sweatsFour from '@/assets/images/campaign/sweats-four.webp';
+
 /**
- * Placeholder catalogue for the "meh" storefront. All names, prices and
- * imagery are placeholders. Replace with real data or an API later.
+ * Sample catalogue for the "meh" storefront. Photos are the owner's sample
+ * shots (src/assets/images, pre-sized WebP, imported statically so Next knows
+ * width/height and generates a blur placeholder). Names and prices are
+ * placeholders.
  *
- * `tone` / `altTone` pick one of the monochrome art-direction tiles defined in
- * src/styles/tokens.css (`tile-1` … `tile-8`). The alt tone is the
- * "second photo" revealed on hover.
+ * `position` is the CSS object-position used inside the 3:4 tile, tuned so the
+ * garment stays centred. `isDarkBackdrop` flips overlay colours (dots).
  */
-export type Tone = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+export type ProductImage = {
+  src: StaticImageData;
+  alt: string;
+  position?: string;
+  isDarkBackdrop?: boolean;
+};
 
 export type Product = {
   id: string;
@@ -14,39 +29,59 @@ export type Product = {
   category: string;
   price: number;
   description: string;
-  tone: Tone;
-  altTone: Tone;
+  image: ProductImage;
   tag?: 'New' | 'Last few';
   isSoldOut?: boolean;
 };
 
 export const PRODUCTS: Product[] = [
-  {id: 'p1', name: 'Boxy Tee 01 / Ash', category: 'Tees', price: 38, description: 'Heavyweight cotton, dropped shoulder.', tone: 1, altTone: 5, tag: 'New'},
-  {id: 'p2', name: 'Heavy Hoodie 02 / Ink', category: 'Hoodies', price: 96, description: 'Brushed fleece, oversized hood.', tone: 2, altTone: 6},
-  {id: 'p3', name: 'Cargo Pant 03 / Stone', category: 'Bottoms', price: 84, description: 'Relaxed leg, six pockets.', tone: 3, altTone: 7},
-  {id: 'p4', name: 'Washed Cap 04 / Bone', category: 'Headwear', price: 32, description: 'Six-panel, garment-washed.', tone: 4, altTone: 8, tag: 'Last few'},
-  {id: 'p5', name: 'Longsleeve 05 / Smoke', category: 'Tees', price: 46, description: 'Rib cuffs, boxy fit.', tone: 5, altTone: 1},
-  {id: 'p6', name: 'Zip Hoodie 06 / Charcoal', category: 'Hoodies', price: 104, description: 'Two-way zip, kangaroo pocket.', tone: 6, altTone: 2, isSoldOut: true},
-  {id: 'p7', name: 'Track Short 07 / Fog', category: 'Bottoms', price: 52, description: 'Nylon shell, mesh lining.', tone: 7, altTone: 3, tag: 'New'},
-  {id: 'p8', name: 'Knit Beanie 08 / Coal', category: 'Headwear', price: 28, description: 'Merino blend, one size.', tone: 8, altTone: 4},
+  {
+    id: 'p1', name: 'Field Bomber / Olive', category: 'Outerwear', price: 148, tag: 'New',
+    description: 'Washed cotton shell, ribbed collar.',
+    image: {src: fieldBomber, alt: 'Olive field bomber jacket held up against a pale grey backdrop', position: '50% 40%'},
+  },
+  {
+    id: 'p2', name: 'Leather Jacket / Black', category: 'Outerwear', price: 260, tag: 'Last few',
+    description: 'Cropped, buffed leather, patch pockets.',
+    image: {src: leatherJacket, alt: 'Black cropped leather jacket on a hanger against a white backdrop', position: '50% 45%'},
+  },
+  {
+    id: 'p3', name: 'Heavy Tee / Mustard', category: 'Tees', price: 42,
+    description: 'Heavyweight jersey, tight rib neck.',
+    image: {src: heavyTee, alt: 'Close-up of a mustard heavyweight tee neckline', position: '50% 50%', isDarkBackdrop: true},
+  },
+  {
+    id: 'p4', name: 'Belted Wide Trouser / Taupe', category: 'Trousers', price: 118, tag: 'New',
+    description: 'Wide leg, self-tie belt.',
+    image: {src: wideTrouser, alt: 'Taupe wide-leg trousers with a tie belt held up against a light backdrop', position: '50% 40%'},
+  },
+  {
+    id: 'p5', name: 'Moto Jacket / Burgundy', category: 'Outerwear', price: 290,
+    description: 'Oil-waxed leather, asymmetric zip.',
+    image: {src: motoJacket, alt: 'Burgundy leather moto jacket held up against a pale grey wall', position: '50% 35%'},
+  },
+  {
+    id: 'p6', name: 'Oversized Tee / Forest', category: 'Tees', price: 46,
+    description: 'Boxy fit, dropped shoulder.',
+    image: {src: oversizedTee, alt: 'Dark green oversized tee held up by four hands against a beige backdrop', position: '50% 45%'},
+  },
 ];
 
-export const RAIL_ITEMS: Product[] = [
-  {id: 'r1', name: 'Sling Bag 09 / Ink', category: 'Bags', price: 58, description: 'Cross-body, water-resistant.', tone: 2, altTone: 6},
-  {id: 'r2', name: 'Tote 10 / Bone', category: 'Bags', price: 34, description: 'Canvas, inner pocket.', tone: 4, altTone: 8, isSoldOut: true},
-  {id: 'r3', name: 'Duffel 11 / Charcoal', category: 'Bags', price: 120, description: '40 L, padded straps.', tone: 6, altTone: 2},
-  {id: 'r4', name: 'Pouch 12 / Ash', category: 'Bags', price: 22, description: 'Zip pouch, nylon.', tone: 1, altTone: 5},
-  {id: 'r5', name: 'Backpack 13 / Coal', category: 'Bags', price: 88, description: 'Laptop sleeve, 22 L.', tone: 8, altTone: 4},
-  {id: 'r6', name: 'Belt Bag 14 / Fog', category: 'Bags', price: 40, description: 'Adjustable strap.', tone: 7, altTone: 3, isSoldOut: true},
-];
+/** New in grid: four pieces, so the 4-up desktop row and 2-up mobile grid stay full. */
+export const NEW_IN: Product[] = PRODUCTS.slice(0, 4);
 
-export const COLLECTIONS = [
-  {id: 'c1', name: 'Tees', tone: 1 as Tone},
-  {id: 'c2', name: 'Hoodies', tone: 2 as Tone},
-  {id: 'c3', name: 'Bottoms', tone: 3 as Tone},
-  {id: 'c4', name: 'Headwear', tone: 4 as Tone},
-  {id: 'c5', name: 'Bags', tone: 6 as Tone},
-  {id: 'c6', name: 'Accessories', tone: 8 as Tone},
+/** Whole drop for the carousel, leading with the two pieces not in the grid. */
+export const FULL_DROP: Product[] = [PRODUCTS[4], PRODUCTS[5], ...PRODUCTS.slice(0, 4)];
+
+export type Collection = {id: string; name: string; image: ProductImage};
+
+export const COLLECTIONS: Collection[] = [
+  {id: 'c1', name: 'Outerwear', image: {...PRODUCTS[0].image, position: '50% 35%'}},
+  {id: 'c2', name: 'Leather', image: {...PRODUCTS[4].image, position: '50% 30%'}},
+  {id: 'c3', name: 'Tees', image: {...PRODUCTS[5].image, position: '50% 40%'}},
+  {id: 'c4', name: 'Trousers', image: {...PRODUCTS[3].image, position: '50% 35%'}},
+  {id: 'c5', name: 'Basics', image: PRODUCTS[2].image},
+  {id: 'c6', name: 'Sweats', image: {src: sweatsFour, alt: 'Two men in grey and cream sweats', position: '12% 50%'}},
 ];
 
 export const SPACES = [
@@ -56,14 +91,14 @@ export const SPACES = [
 ];
 
 export const POPULAR_SEARCHES = [
-  'Oversized tees', 'Heavy hoodies', 'Cargo pants', 'Washed caps', 'Sling bags',
-  'Knit beanies', 'Track shorts', 'Zip hoodies', 'New in', 'Gift cards',
+  'Oversized tees', 'Leather jackets', 'Bombers', 'Wide trousers', 'Heavy tees',
+  'Outerwear', 'Sweats', 'New in', 'Gift cards',
 ];
 
 export const NAV_LINKS = [
   {label: 'New in', href: '#new-in'},
   {label: 'Collections', href: '#collections'},
-  {label: 'Bags', href: '#bags'},
+  {label: 'Full drop', href: '#drop'},
   {label: 'Spaces', href: '#spaces'},
 ];
 

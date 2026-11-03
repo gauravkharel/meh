@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import {useState} from 'react';
 import {Drawer, DrawerHeader} from '@astryxdesign/core/Drawer';
 import {VStack, HStack} from '@astryxdesign/core/Layout';
@@ -13,8 +14,6 @@ import {MinusIcon, PlusIcon, TrashIcon, ShoppingBagIcon} from '@heroicons/react/
 import {formatPrice} from '@/data/products';
 import {useCart, type CartLine} from '@/lib/cart';
 import {formatItems} from '@/lib/plural';
-import {GarmentGlyph} from './GarmentGlyph';
-import {TILE, isDarkTone} from './tiles';
 
 /**
  * Cart drawer. Removing a line or clearing the cart happens at once and offers
@@ -83,8 +82,15 @@ export function CartDrawer() {
                     startContent={
                       <span
                         aria-hidden
-                        className={`relative block h-14 w-11 shrink-0 overflow-hidden rounded-[var(--radius-inner)] outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10 ${TILE[product.tone]}`}>
-                        <GarmentGlyph category={product.category} isDark={isDarkTone(product.tone)} />
+                        className="relative block h-14 w-11 shrink-0 overflow-hidden rounded-[var(--radius-inner)] bg-muted outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10">
+                        <Image
+                          src={product.image.src}
+                          alt=""
+                          fill
+                          sizes="44px"
+                          className="object-cover"
+                          style={{objectPosition: product.image.position ?? '50% 50%'}}
+                        />
                       </span>
                     }
                     label={
