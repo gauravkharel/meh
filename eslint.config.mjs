@@ -16,6 +16,11 @@ const eslintConfig = defineConfig([
     "src/themes/meh.d.ts",
     "src/themes/meh.js",
     "src/themes/meh.variants.d.ts",
+    // Vendored agent skills (npx skills add jakubkrehel/skills).
+    ".agents/**",
+    ".claude/**",
+    // Local throwaway harness pages (not committed).
+    "src/app/dev-harness/**",
   ]),
 ]);
 
