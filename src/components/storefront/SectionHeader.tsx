@@ -16,7 +16,7 @@ export function SectionHeader({
 }) {
   return (
     <HStack hAlign="between" vAlign="center" gap={2} className="px-1">
-      <Heading level={2} className="text-[15px] font-semibold tracking-[-0.01em]">
+      <Heading level={2} className="text-[15px] font-semibold tracking-[-0.01em] text-balance">
         {title}
       </Heading>
       {actionLabel ? (

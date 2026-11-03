@@ -87,7 +87,7 @@ export function ProductTile({product, variant = 'grid'}: {product: Product; vari
             <span
               key={i}
               className={`h-1 rounded-full transition-[width,background-color] duration-300 ${i === shot ? 'w-4' : 'w-1'} ${
-                isDarkTone(tone) ? (i === shot ? 'bg-paper/90' : 'bg-paper/40') : i === shot ? 'bg-ink/80' : 'bg-ink/30'
+                isDarkTone(tone) ? (i === shot ? 'bg-paper/90' : 'bg-paper/40') : i === shot ? 'bg-ink/80' : 'bg-ink/45'
               }`}
             />
           ))}

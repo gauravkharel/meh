@@ -29,7 +29,7 @@ export function SpacesPanel() {
 
       <VStack gap={3} hAlign="center">
         <Token label="Spaces in 3 places" icon={<Icon icon={MapPinIcon} />} size="sm" />
-        <h2 className="max-w-[16ch] text-center text-[clamp(32px,5vw,64px)] leading-[0.95] font-extrabold tracking-[-0.04em] text-ink">
+        <h2 className="max-w-[16ch] text-center text-[clamp(32px,5vw,64px)] leading-[0.95] font-extrabold tracking-[-0.04em] text-balance text-ink">
           Try it on in person
         </h2>
       </VStack>
@@ -46,7 +46,7 @@ export function SpacesPanel() {
                 <div className="pt-3">
                   <Link href="#spaces" color="primary">
                     <span className="inline-flex items-center gap-1 text-[13px] font-medium">
-                      Get directions <Icon icon={ArrowUpRightIcon} size="sm" />
+                      Get directions<span className="sr-only"> to {s.name}</span> <Icon icon={ArrowUpRightIcon} size="sm" />
                     </span>
                   </Link>
                 </div>

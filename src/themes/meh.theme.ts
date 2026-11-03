@@ -10,7 +10,8 @@ export const mehTheme = defineTheme({
   name: 'meh',
   extends: neutralTheme,
   typography: {
-    scale: {base: 13, ratio: 1.25},
+    // 14px base, tight 1.15 steps: small labels and badges stay at 12px or more.
+    scale: {base: 14, ratio: 1.15},
     body: {
       family: 'Inter Tight',
       fallbacks: grotesk,
