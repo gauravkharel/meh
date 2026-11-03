@@ -9,7 +9,17 @@
  *   - the marquee keyframes (opt-in via motion-safe:, pausable)
  * Swap the tiles for real <Image> photography when it exists.
  */
+/* Section rhythm: the gap between home page sections (hero, grids, panels,
+   footer). One knob: tune --meh-section-gap. Built on the Astryx spacing
+   scale; 10px on phones, 12px (--spacing-3) from 640px up. Grid gutters
+   inside a section stay tighter (4px) so each group still reads as one. */
+:root { --meh-section-gap: calc(var(--spacing-2) + var(--spacing-0-5)); }
+@media (min-width: 40rem) {
+  :root { --meh-section-gap: var(--spacing-3); }
+}
+
 @theme inline {
+  --spacing-section: var(--meh-section-gap);
   --color-ink: #0a0a0a;
   --color-paper: #ffffff;
   --animate-marquee: meh-marquee 40s linear infinite;

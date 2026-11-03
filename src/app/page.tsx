@@ -24,7 +24,7 @@ export default function Home() {
         Skip to content
       </a>
       <SiteHeader />
-      <main id="main" tabIndex={-1} className="flex flex-col gap-2 p-2 outline-none">
+      <main id="main" tabIndex={-1} className="flex flex-col gap-section px-2 pt-2 pb-section outline-none">
         <EditorialHero />
         <ProductGrid id="new-in" title="New in" products={PRODUCTS} />
         <CollectionRail id="bags" title="Bags & carry" items={RAIL_ITEMS} />
