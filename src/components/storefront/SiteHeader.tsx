@@ -10,10 +10,10 @@ import {
   MagnifyingGlassIcon,
   MapPinIcon,
   ShoppingBagIcon,
-  UserIcon,
 } from '@heroicons/react/24/outline';
 import {NAV_LINKS} from '@/data/products';
 import {useCart} from '@/lib/cart';
+import {formatItems} from '@/lib/plural';
 import {AnnouncementMarquee} from './AnnouncementMarquee';
 import {MobileMenu} from './MobileMenu';
 import {Wordmark} from './Wordmark';
@@ -55,12 +55,9 @@ export function SiteHeader() {
               <span className="max-sm:hidden">
                 <IconButton label="Search" icon={<Icon icon={MagnifyingGlassIcon} />} variant="ghost" onClick={() => setMenuOpen(true)} />
               </span>
-              <span className="max-sm:hidden">
-                <IconButton label="Account (demo)" icon={<Icon icon={UserIcon} />} variant="ghost" isDisabled />
-              </span>
               <span className="relative">
                 <IconButton
-                  label={`Cart, ${count} ${count === 1 ? 'item' : 'items'}`}
+                  label={`Cart, ${formatItems(count)}`}
                   icon={<Icon icon={ShoppingBagIcon} />}
                   variant="ghost"
                   onClick={() => setOpen(true)}
@@ -68,7 +65,7 @@ export function SiteHeader() {
                 {count > 0 ? (
                   <span
                     aria-hidden
-                    className="pointer-events-none absolute top-0.5 right-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-ink px-1 text-[10px] font-semibold text-paper">
+                    className="pointer-events-none absolute top-0.5 end-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-ink px-1 text-[10px] font-semibold tabular-nums text-paper">
                     {count}
                   </span>
                 ) : null}

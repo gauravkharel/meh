@@ -25,4 +25,7 @@
 /* Brand tokens (project-level). Swap these when the real design lands. */
 @import "../styles/tokens.css";
 
-html { scroll-behavior: smooth; scroll-padding-top: 96px; }
+html { scroll-padding-top: 96px; }
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}

@@ -13,7 +13,7 @@ export function CollectionRail({id, title, items}: {id: string; title: string; i
     <Panel id={id} label={title} padding={3}>
       <VStack gap={3}>
         <SectionHeader title={title} actionLabel="Discover more" actionHref={`#${id}`} />
-        <Carousel aria-label={title} gap={2} hasSnap hasEdgeFade={false}>
+        <Carousel aria-label={`${title} products`} gap={2} hasSnap hasEdgeFade={false}>
           {items.map(p => (
             <div key={p.id} className="w-[200px] sm:w-[260px]">
               <ProductTile product={p} variant="rail" />

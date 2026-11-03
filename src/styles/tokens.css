@@ -6,7 +6,7 @@
  * storefront-specific art direction that Astryx doesn't model:
  *   - `tile-1` … `tile-8`: monochrome placeholder "photography" tiles
  *   - `tile-hero`, `tile-campaign`, `tile-spaces`: editorial banner art
- *   - the marquee keyframes
+ *   - the marquee keyframes (opt-in via motion-safe:, pausable)
  * Swap the tiles for real <Image> photography when it exists.
  */
 @theme inline {
@@ -20,9 +20,8 @@
   to { transform: translateX(-50%); }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .animate-marquee { animation: none; }
-}
+/* Components opt in with `motion-safe:animate-marquee`, so reduced motion
+   never starts it. Announcements also carry a visible pause control. */
 
 /* Soft studio-light gradients: a lit subject on a neutral sweep. */
 @utility tile-1 { background: radial-gradient(60% 50% at 50% 42%, #f4f4f4 0%, #d9d9d9 55%, #c4c4c4 100%); }
