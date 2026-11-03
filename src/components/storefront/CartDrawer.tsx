@@ -9,7 +9,6 @@ import {Button} from '@astryxdesign/core/Button';
 import {IconButton} from '@astryxdesign/core/IconButton';
 import {Icon} from '@astryxdesign/core/Icon';
 import {EmptyState} from '@astryxdesign/core/EmptyState';
-import {useToast} from '@astryxdesign/core/Toast';
 import {MinusIcon, PlusIcon, TrashIcon, ShoppingBagIcon} from '@heroicons/react/24/outline';
 import {formatPrice} from '@/data/products';
 import {useCart, type CartLine} from '@/lib/cart';
@@ -19,49 +18,58 @@ import {TILE, isDarkTone} from './tiles';
 
 /**
  * Cart drawer. Removing a line or clearing the cart happens at once and offers
- * Undo in a toast, instead of asking for confirmation first.
+ * Undo inline, instead of asking for confirmation first.
  */
 export function CartDrawer() {
   const {lines, count, subtotal, isOpen, setOpen, add, decrement, remove, clear, restore} = useCart();
-  const toast = useToast();
   const [isCheckoutNoteShown, setCheckoutNoteShown] = useState(false);
 
-  const offerUndo = (body: string, snapshot: CartLine[]) => {
-    toast({
-      body,
-      uniqueID: 'cart-undo',
-      autoHideDuration: 10000,
-      endContent: (
-        <Button
-          label="Undo"
-          size="sm"
-          variant="secondary"
-          onClick={() => {
-            restore(snapshot);
-            // Same uniqueID: replaces the Undo toast with a confirmation.
-            toast({body: 'Put back in your cart', uniqueID: 'cart-undo'});
-          }}
-        />
-      ),
-    });
+  // Undo lives inside the drawer: the drawer is modal, so a toast behind it
+  // would be inert and unreachable.
+  const [undo, setUndo] = useState<{message: string; snapshot: CartLine[]} | null>(null);
+  const offerUndo = (message: string, snapshot: CartLine[]) => setUndo({message, snapshot});
+  const handleOpenChange = (open: boolean) => {
+    setOpen(open);
+    if (!open) {
+      setUndo(null);
+      setCheckoutNoteShown(false);
+    }
   };
 
   const removeLine = (line: CartLine) => {
     const snapshot = lines;
     remove(line.product.id);
-    offerUndo(`Removed ${line.product.name}`, snapshot);
+    offerUndo(`Removed ${line.product.name}.`, snapshot);
   };
 
   return (
-    <Drawer isOpen={isOpen} onOpenChange={setOpen} label="Shopping cart" width={420}>
+    <Drawer isOpen={isOpen} onOpenChange={handleOpenChange} label="Shopping cart" width={420}>
       <VStack gap={4} className="min-h-full">
-        <DrawerHeader title="Your cart" subtitle={formatItems(count)} onOpenChange={setOpen} />
+        <DrawerHeader title="Your cart" subtitle={formatItems(count)} onOpenChange={handleOpenChange} />
+        <div role="status">
+          {undo ? (
+            <HStack gap={2} hAlign="between" vAlign="center" className="rounded-[var(--radius-element)] border border-[var(--color-border)] py-1 ps-3 pe-1">
+              <Text type="supporting" color="primary" className="min-w-0 break-words">
+                {undo.message}
+              </Text>
+              <Button
+                label="Undo"
+                size="sm"
+                variant="secondary"
+                onClick={() => {
+                  restore(undo.snapshot);
+                  setUndo(null);
+                }}
+              />
+            </HStack>
+          ) : null}
+        </div>
         {lines.length === 0 ? (
           <EmptyState
             icon={<Icon icon={ShoppingBagIcon} />}
             title="Your cart is empty"
             description="New pieces drop every season. Start with what just landed."
-            actions={<Button label="Shop new in" variant="primary" href="#new-in" onClick={() => setOpen(false)} />}
+            actions={<Button label="Shop new in" variant="primary" href="#new-in" onClick={() => handleOpenChange(false)} />}
           />
         ) : (
           <>
@@ -136,7 +144,7 @@ export function CartDrawer() {
                     onClick={() => {
                       const snapshot = lines;
                       clear();
-                      offerUndo('Cart cleared', snapshot);
+                      offerUndo('Cart cleared.', snapshot);
                     }}
                   />
                 </VStack>
