@@ -1,0 +1,23 @@
+/*
+ * Project-level design tokens for "meh".
+ *
+ * Astryx already supplies the core semantic tokens (color, type, spacing,
+ * radius, shadow) through its theme (currently `theme-neutral`). This file is
+ * the place for e-commerce specific tokens layered on top, exposed to Tailwind
+ * through `@theme inline` so they become utilities (e.g. `bg-product-1`).
+ *
+ * When the real design arrives, prefer customising the Astryx theme
+ * (`defineTheme({extends: neutralTheme, ...})`, see README) and keep this
+ * file for anything Astryx doesn't model.
+ */
+@theme inline {
+  /* Product placeholder swatches, mapped onto Astryx hue tokens */
+  --color-product-1: var(--color-background-blue);
+  --color-product-2: var(--color-background-orange);
+  --color-product-3: var(--color-background-green);
+  --color-product-4: var(--color-background-purple);
+  --color-product-5: var(--color-background-teal);
+  --color-product-6: var(--color-background-pink);
+  --color-product-7: var(--color-background-yellow);
+  --color-product-8: var(--color-background-cyan);
+}

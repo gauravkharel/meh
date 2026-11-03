@@ -1,0 +1,23 @@
+/*
+ * Design system entry point.
+ *
+ * Astryx (Meta's open-source design system) provides components + tokens.
+ * Tailwind v4 handles layout glue, using Astryx tokens via the bridge
+ * (`@astryxdesign/core/tailwind-theme.css`), e.g. `bg-surface`, `text-secondary`.
+ *
+ * Layer order (lowest → highest priority). Declared first so Tailwind
+ * utilities can override Astryx component styles via `className`.
+ */
+@layer reset, theme, base, astryx-base, astryx-theme, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "@astryxdesign/core/reset.css";
+@import "@astryxdesign/core/astryx.css";
+@import "@astryxdesign/theme-neutral/theme.css";
+@import "@astryxdesign/theme-neutral/fonts.css";
+@import "@astryxdesign/core/tailwind-theme.css";
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/* Brand tokens (project-level). Swap these when the real design lands. */
+@import "../styles/tokens.css";
