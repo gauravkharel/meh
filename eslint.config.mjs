@@ -19,8 +19,6 @@ const eslintConfig = defineConfig([
     // Vendored agent skills (npx skills add jakubkrehel/skills).
     ".agents/**",
     ".claude/**",
-    // Local throwaway harness pages (not committed).
-    "src/app/dev-harness/**",
   ]),
 ]);
 

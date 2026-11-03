@@ -20,8 +20,8 @@ export function EditorialHero() {
   return (
     <section
       aria-label="Season campaign"
-      className="relative isolate h-[calc(100svh-96px)] min-h-[520px] overflow-hidden rounded-[var(--radius-page)] tile-hero text-paper">
-      <div aria-hidden className="absolute inset-x-[6%] bottom-0 flex h-full items-end justify-center gap-[2.5%]">
+      className="relative isolate flex min-h-[max(520px,calc(100svh-96px))] flex-col justify-between overflow-hidden rounded-[var(--radius-page)] tile-hero text-paper">
+      <div aria-hidden className="pointer-events-none absolute inset-x-[6%] bottom-0 flex h-full items-end justify-center gap-[2.5%]">
         {FIGURES.map((f, i) => (
           <div key={i} className={`relative w-[14%] max-w-[180px] ${f.h} ${i % 2 ? 'max-sm:hidden' : ''}`}>
             <div className={`mx-auto aspect-square w-[34%] rounded-full bg-gradient-to-b ${f.shade} to-transparent`} />
@@ -30,17 +30,17 @@ export function EditorialHero() {
         ))}
       </div>
 
-      <div className="absolute inset-x-0 top-[12%] z-10 flex flex-col items-center gap-3 px-6 text-center">
-        <span className="relative z-10 text-[11px] font-medium tracking-[0.2em] text-paper uppercase opacity-70">Season 01 · Placeholder campaign</span>
-        <h1 className="relative z-10 max-w-[14ch] text-paper text-[clamp(44px,8vw,120px)] leading-[0.9] font-extrabold tracking-[-0.05em]">
-          Uniform for the in-between
+      <div className="relative z-10 flex flex-col items-center gap-3 px-6 pt-[clamp(48px,11svh,120px)] text-center">
+        <span className="relative z-10 text-[12px] font-medium tracking-[0.2em] text-paper uppercase opacity-70">Season 01 · Placeholder campaign</span>
+        <h1 className="relative z-10 max-w-[14ch] text-paper text-[clamp(44px,8vw,120px)] leading-[0.9] text-balance font-extrabold tracking-[-0.05em]">
+          Uniform for the in‑between
         </h1>
       </div>
 
-      <div className="absolute inset-x-0 bottom-8 flex justify-center">
+      <div className="relative z-10 flex justify-center px-6 pt-10 pb-8">
         <NextLink
           href="#new-in"
-          className="text-[13px] font-medium text-paper underline decoration-1 underline-offset-[6px] hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-paper">
+          className="inline-flex min-h-8 items-center text-[14px] font-medium text-paper underline decoration-1 underline-offset-[6px] hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-paper">
           Shop the drop
         </NextLink>
       </div>

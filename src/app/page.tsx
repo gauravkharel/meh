@@ -29,7 +29,7 @@ export default function Home() {
         <ProductGrid id="new-in" title="New in" products={PRODUCTS} />
         <CollectionRail id="bags" title="Bags & carry" items={RAIL_ITEMS} />
         <CampaignBanner />
-        <ProductGrid id="essentials" title="Essentials" products={[...PRODUCTS].reverse()} actionLabel="Shop essentials" />
+        <ProductGrid id="essentials" title="Essentials" products={[...PRODUCTS].reverse()} action={{label: 'Shop bags', href: '#bags'}} />
         <CollectionsGrid />
         <SpacesPanel />
         <SearchStrip />

@@ -33,7 +33,10 @@ export function MobileMenu({isOpen, onOpenChange}: {isOpen: boolean; onOpenChang
           value={query}
           onChange={setQuery}
           width="100%"
-          data-autofocus
+          type="search"
+          enterKeyHint="search"
+          hasClear
+          hasAutoFocus
         />
         {q ? (
           <VStack gap={2}>

@@ -11,18 +11,19 @@ export function ProductGrid({
   id,
   title,
   products,
-  actionLabel = 'View all',
+  action = {label: 'Browse collections', href: '#collections'},
 }: {
   id: string;
   title: string;
   products: Product[];
-  actionLabel?: string;
+  /** Pill action. It points somewhere else on the page, never back at this section. */
+  action?: {label: string; href: string} | null;
 }) {
   return (
     <section id={id} aria-label={title} className="scroll-mt-28">
       <VStack gap={2}>
         <div className="pt-3">
-          <SectionHeader title={title} actionLabel={actionLabel} actionHref={`#${id}`} />
+          <SectionHeader title={title} actionLabel={action?.label} actionHref={action?.href} />
         </div>
         <Grid columns={{minWidth: 165, max: 4}} gap={1}>
           {products.map(p => (

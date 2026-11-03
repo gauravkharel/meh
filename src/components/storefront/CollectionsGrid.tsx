@@ -14,17 +14,17 @@ export function CollectionsGrid() {
   return (
     <Panel id="collections" label="Collections" padding={3}>
       <VStack gap={3}>
-        <SectionHeader title="Collections" actionLabel="Discover more" actionHref="#collections" />
+        <SectionHeader title="Collections" actionLabel="Find a space" actionHref="#spaces" />
         <Grid columns={{minWidth: 150, max: 6}} gap={2}>
           {COLLECTIONS.map(c => (
             <NextLink
               key={c.id}
               href="#new-in"
               className={`group/col relative block aspect-square overflow-hidden rounded-[var(--radius-container)] ${TILE[c.tone]} focus-visible:outline-2 focus-visible:outline-offset-2`}>
-              <span className="absolute inset-0 transition-transform duration-500 group-hover/col:scale-105">
+              <span className="absolute inset-0 transition-[scale] duration-500 motion-safe:group-hover/col:scale-105">
                 <GarmentGlyph category={c.name} isDark={isDarkTone(c.tone)} />
               </span>
-              <span className="absolute bottom-2 left-2 rounded-full bg-paper px-3 py-1 text-[12px] font-medium text-ink">
+              <span className="absolute start-2 bottom-2 rounded-full bg-paper px-3 py-1 text-[12px] font-medium text-ink">
                 {c.name}
               </span>
             </NextLink>

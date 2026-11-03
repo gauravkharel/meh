@@ -18,13 +18,21 @@ export function SearchStrip() {
           <Heading level={2} className="text-[15px] font-semibold">
             About meh
           </Heading>
-          <Text type="supporting" maxLines={isOpen ? undefined : 2}>
+          <Text id="about-meh-copy" type="supporting" maxLines={isOpen ? undefined : 2} className="max-w-[65ch] text-pretty">
             meh is a placeholder streetwear label used to test a design system. Everything on this page is
             sample content: heavyweight basics, quiet colours and a small set of pieces meant to be worn on
             repeat. Replace this copy with the real brand story when it lands.
           </Text>
           <div>
-            <Button label={isOpen ? 'Read less' : 'Read more'} variant="ghost" size="sm" onClick={() => setOpen(o => !o)} />
+            <Button
+              label={isOpen ? 'Read less' : 'Read more'}
+              variant="ghost"
+              size="sm"
+              aria-expanded={isOpen}
+              aria-controls="about-meh-copy"
+              className="-ms-2"
+              onClick={() => setOpen(o => !o)}
+            />
           </div>
         </VStack>
         <VStack gap={2}>
