@@ -11,11 +11,11 @@
  */
 /* Section rhythm: the gap between home page sections (hero, grids, panels,
    footer). One knob: tune --meh-section-gap. Built on the Astryx spacing
-   scale; 10px on phones, 12px (--spacing-3) from 640px up. Grid gutters
+   scale; 16px (--spacing-4) on phones, 24px (--spacing-6) from 640px up. Grid gutters
    inside a section stay tighter (4px) so each group still reads as one. */
-:root { --meh-section-gap: calc(var(--spacing-2) + var(--spacing-0-5)); }
+:root { --meh-section-gap: var(--spacing-4); }
 @media (min-width: 40rem) {
-  :root { --meh-section-gap: var(--spacing-3); }
+  :root { --meh-section-gap: var(--spacing-6); }
 }
 
 @theme inline {
